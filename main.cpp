@@ -207,22 +207,37 @@ int main() {
 
   // MAIN PROGRAM ==============================================================
 
-	// Simple Gaussian blur filter
-	// float filter[] = {
-	// 	1, 2, 1,
-	// 	2, 4, 2,
-	// 	1, 2, 1
+  // Simple gaussian blur
+	float filter[] = {
+		1, 2, 1,
+		2, 4, 2,
+		1, 2, 1
+	};
+
+  // Sharpen
+  // float filter[] = {
+	// 	-1, -1, -1,
+	// 	-1,  9, -1,
+  //   -1, -1, -1
 	// };
 
-  float filter[] = {
-		-1, -1, -1,
-		-1,  8, -1,
-    -1, -1, -1
-	};
+  // Dark edges
+  // float filter[] = {
+	// 	-1, -1, -1,
+	// 	-1,  8, -1,
+  //   -1, -1, -1
+	// };
+
+  int sum = 0;
+  for (int i = 0; i < 9; i++) {
+    sum += filter[i];
+  }
 
 	// Normalize the filter
 	for (int i = 0; i < 9; ++i) {
-		filter[i] /= 1.0f;
+    if (sum != 0) {
+      filter[i] /= (float) sum;
+    }
 	}
 
 	// Create a program from source
