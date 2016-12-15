@@ -125,7 +125,7 @@ std::string GetDeviceName(cl_device_id id) {
 void CheckError(cl_int error) {
 	if (error != CL_SUCCESS) {
 		std::cerr << "OpenCL call failed with error " << error << std::endl;
-		std::exit (1);
+		std::exit(1);
 	}
 }
 
@@ -208,10 +208,16 @@ int main() {
   // MAIN PROGRAM ==============================================================
 
 	// Simple Gaussian blur filter
-	float filter[] = {
-		1, 2, 1,
-		2, 4, 2,
-		1, 2, 1
+	// float filter[] = {
+	// 	1, 2, 1,
+	// 	2, 4, 2,
+	// 	1, 2, 1
+	// };
+
+  float filter[] = {
+		1, 2, 3,
+		4, 5, 6,
+		7, 8, 9
 	};
 
 	// Normalize the filter
@@ -220,8 +226,8 @@ int main() {
 	}
 
 	// Create a program from source
-	cl_program program_gaussian = CreateProgram (LoadKernel("kernels/gaussian.cl"), context);
-	CheckError(clBuildProgram (program_gaussian, deviceIdCount, deviceIds.data(), "-D FILTER_SIZE=1", nullptr, nullptr));
+	cl_program program_gaussian = CreateProgram(LoadKernel("kernels/gaussian.cl"), context);
+	CheckError(clBuildProgram(program_gaussian, deviceIdCount, deviceIds.data(), "-D FILTER_SIZE=1", nullptr, nullptr));
 
 	// http://www.khronos.org/registry/cl/sdk/1.1/docs/man/xhtml/clCreateKernel.html
 	cl_kernel kernel = clCreateKernel(program_gaussian, "gaussian", &error);
@@ -238,9 +244,9 @@ int main() {
 		image.width,
     image.height,
     0,
-		const_cast<char*> (image.pixel.data ()), // This is a bug in the spec
+		const_cast<char*> (image.pixel.data()), // This is a bug in the spec
 		&error);
-	CheckError (error);
+	CheckError(error);
 
 	cl_mem outputImage = clCreateImage2D(context, CL_MEM_WRITE_ONLY, &format,
     image.width, image.height, 0, nullptr, &error);
@@ -251,7 +257,7 @@ int main() {
 	cl_mem filterWeightsBuffer = clCreateBuffer(
     context,
     CL_MEM_READ_ONLY | CL_MEM_COPY_HOST_PTR,
-		sizeof (float) * 9,
+		sizeof(float) * 9,
     filter,
     &error);
 	CheckError (error);
@@ -273,11 +279,11 @@ int main() {
 
 	// Prepare the result image, set to black
 	Image result = image;
-	std::fill (result.pixel.begin(), result.pixel.end(), 0);
+	std::fill(result.pixel.begin(), result.pixel.end(), 0);
 
 	// Get the result back to the host
-	std::size_t origin [3] = { 0 };
-	std::size_t region [3] = { (std::size_t) result.width, (std::size_t) result.height, 1 };
+	std::size_t origin[3] = { 0 };
+	std::size_t region[3] = { (std::size_t) result.width, (std::size_t) result.height, 1 };
 	clEnqueueReadImage(queue, outputImage, CL_TRUE,
 		origin, region, 0, 0,
 		result.pixel.data (), 0, nullptr, nullptr);
@@ -287,6 +293,7 @@ int main() {
 	clReleaseMemObject(outputImage);
 	clReleaseMemObject(filterWeightsBuffer);
 	clReleaseMemObject(inputImage);
+
 	clReleaseCommandQueue(queue);
 	clReleaseKernel(kernel);
 	clReleaseProgram(program_gaussian);

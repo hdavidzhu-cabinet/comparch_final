@@ -10,15 +10,15 @@ float getGuassianValue(__constant const float* filterWeights, const int x, const
 __kernel void gaussian(
   __read_only image2d_t input,
   __constant float* filterWeights,
-  __write_only image2d_t output){
+  __write_only image2d_t output) {
 
-  const int2 pos = {get_global_id(0), get_global_id(1)};
+  const int2 position = { get_global_id(0), get_global_id(1) };
   float4 sum = (float4)(0.0f);
   for(int y = -FILTER_SIZE; y <= FILTER_SIZE; y++) {
     for(int x = -FILTER_SIZE; x <= FILTER_SIZE; x++) {
-      sum += getGuassianValue(filterWeights, x, y) * read_imagef(input, sampler, pos + (int2)(x,y));
+      sum += getGuassianValue(filterWeights, x, y) * read_imagef(input, sampler, position + (int2)(x, y));
     }
   }
 
-  write_imagef (output, (int2)(pos.x, pos.y), sum);
+  write_imagef(output, (int2)(position.x, position.y), sum);
 }
