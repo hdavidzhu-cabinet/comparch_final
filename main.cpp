@@ -215,22 +215,22 @@ int main() {
 	// };
 
   float filter[] = {
-		1, 2, 3,
-		4, 5, 6,
-		7, 8, 9
+		-1, -1, -1,
+		-1,  8, -1,
+    -1, -1, -1
 	};
 
 	// Normalize the filter
 	for (int i = 0; i < 9; ++i) {
-		filter[i] /= 16.0f;
+		filter[i] /= 1.0f;
 	}
 
 	// Create a program from source
-	cl_program program_gaussian = CreateProgram(LoadKernel("kernels/gaussian.cl"), context);
-	CheckError(clBuildProgram(program_gaussian, deviceIdCount, deviceIds.data(), "-D FILTER_SIZE=1", nullptr, nullptr));
+	cl_program program_filter = CreateProgram(LoadKernel("kernels/filter.cl"), context);
+	CheckError(clBuildProgram(program_filter, deviceIdCount, deviceIds.data(), "-D FILTER_SIZE=1", nullptr, nullptr));
 
 	// http://www.khronos.org/registry/cl/sdk/1.1/docs/man/xhtml/clCreateKernel.html
-	cl_kernel kernel = clCreateKernel(program_gaussian, "gaussian", &error);
+	cl_kernel kernel = clCreateKernel(program_filter, "filter", &error);
 	CheckError (error);
 
 	// OpenCL only supports RGBA, so we need to convert here
@@ -296,6 +296,6 @@ int main() {
 
 	clReleaseCommandQueue(queue);
 	clReleaseKernel(kernel);
-	clReleaseProgram(program_gaussian);
+	clReleaseProgram(program_filter);
 	clReleaseContext(context);
 }

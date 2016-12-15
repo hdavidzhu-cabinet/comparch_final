@@ -3,11 +3,11 @@ __constant sampler_t sampler =
 | CLK_ADDRESS_CLAMP_TO_EDGE
 | CLK_FILTER_NEAREST;
 
-float getGuassianValue(__constant const float* filterWeights, const int x, const int y) {
+float getFilterValue(__constant const float* filterWeights, const int x, const int y) {
 	return filterWeights[(x + FILTER_SIZE) + (y + FILTER_SIZE) * (FILTER_SIZE * 2 + 1)];
 }
 
-__kernel void gaussian(
+__kernel void filter(
   __read_only image2d_t input,
   __constant float* filterWeights,
   __write_only image2d_t output) {
@@ -16,7 +16,7 @@ __kernel void gaussian(
   float4 sum = (float4)(0.0f);
   for(int y = -FILTER_SIZE; y <= FILTER_SIZE; y++) {
     for(int x = -FILTER_SIZE; x <= FILTER_SIZE; x++) {
-      sum += getGuassianValue(filterWeights, x, y) * read_imagef(input, sampler, position + (int2)(x, y));
+      sum += getFilterValue(filterWeights, x, y) * read_imagef(input, sampler, position + (int2)(x, y));
     }
   }
 
