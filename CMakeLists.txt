@@ -7,3 +7,6 @@ INCLUDE_DIRECTORIES(${OPENCL_INCLUDE_DIR})
 
 ADD_EXECUTABLE(gpu_comparch_final main.cpp)
 TARGET_LINK_LIBRARIES(gpu_comparch_final ${OPENCL_LIBRARY})
+
+ADD_EXECUTABLE(matrix_mul matrix.cpp)
+TARGET_LINK_LIBRARIES(matrix_mul ${OPENCL_LIBRARY})

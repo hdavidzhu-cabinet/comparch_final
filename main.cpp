@@ -205,21 +205,21 @@ int main() {
 
 	std::cout << "Context created" << std::endl;
 
-  // MAIN PROGRAM ==============================================================
+  // FILTER PROGRAM ============================================================
 
   // Simple gaussian blur
-	float filter[] = {
-		1, 2, 1,
-		2, 4, 2,
-		1, 2, 1
-	};
+	// float filter[] = {
+	// 	1, 2, 1,
+	// 	2, 4, 2,
+	// 	1, 2, 1
+	// };
 
   // Sharpen
-  // float filter[] = {
-	// 	-1, -1, -1,
-	// 	-1,  9, -1,
-  //   -1, -1, -1
-	// };
+  float filter[] = {
+		-1, -1, -1,
+		-1,  10, -1,
+    -1, -1, -1
+	};
 
   // Dark edges
   // float filter[] = {
