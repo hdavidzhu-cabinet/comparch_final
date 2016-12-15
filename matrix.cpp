@@ -46,7 +46,7 @@ cl_program CreateProgram(const std::string& source, cl_context context) {
 // Following: http://gpgpu-computing4.blogspot.com/2009/09/matrix-multiplication-2-opencl.html
 int main() {
 
-  int MY_LOCAL_WORK_SIZE = 16;
+  int MY_LOCAL_WORK_SIZE = 1;
   int MY_MATRIX_SIZE = 1024;
 
   // Allocate memory.
@@ -67,21 +67,21 @@ int main() {
   randomInit(matrix_B, size_B);
 
   // Print out the arrays.
-  printf("\n\nMatrix A\n");
-  for (int i = 0; i < size_A; i++) {
-    printf("%f", matrix_A[i]);
-    if (((i + 1) % width_A) == 0) {
-      printf("\n");
-    }
-  }
+  // printf("\n\nMatrix A\n");
+  // for (int i = 0; i < size_A; i++) {
+  //   printf("%f", matrix_A[i]);
+  //   if (((i + 1) % width_A) == 0) {
+  //     printf("\n");
+  //   }
+  // }
 
-  printf("\n\nMatrix B\n");
-  for (int i = 0; i < size_B; i++) {
-    printf("%f", matrix_B[i]);
-    if (((i + 1) % width_B) == 0) {
-      printf("\n");
-    }
-  }
+  // printf("\n\nMatrix B\n");
+  // for (int i = 0; i < size_B; i++) {
+  //   printf("%f", matrix_B[i]);
+  //   if (((i + 1) % width_B) == 0) {
+  //     printf("\n");
+  //   }
+  // }
 
   // Allocate host memory for C.
   unsigned int size_C = width_A * height_B;
@@ -149,14 +149,14 @@ int main() {
   checkError(errorCode);
 
   // 9. print out the results
-  printf("\n\nMatrix C (Results)\n");
-  for(int i = 0; i < size_C; i++) {
-    printf("%f ", host_C[i]);
-    if(((i + 1) % width_A) == 0) {
-     printf("\n");
-    }
-  }
-  printf("\n");
+  // printf("\n\nMatrix C (Results)\n");
+  // for(int i = 0; i < size_C; i++) {
+  //   printf("%f ", host_C[i]);
+  //   if(((i + 1) % width_A) == 0) {
+  //    printf("\n");
+  //   }
+  // }
+  // printf("\n");
 
   // 10. clean up memory
   free(matrix_A);

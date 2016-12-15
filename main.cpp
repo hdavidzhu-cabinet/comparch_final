@@ -215,11 +215,11 @@ int main() {
 	// };
 
   // Sharpen
-  float filter[] = {
-		-1, -1, -1,
-		-1,  10, -1,
-    -1, -1, -1
-	};
+  // float filter[] = {
+	// 	-1, -1, -1,
+	// 	-1,  10, -1,
+  //   -1, -1, -1
+	// };
 
   // Dark edges
   // float filter[] = {
