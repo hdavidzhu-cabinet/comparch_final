@@ -46,6 +46,7 @@ cl_program CreateProgram(const std::string& source, cl_context context) {
 // Following: http://gpgpu-computing4.blogspot.com/2009/09/matrix-multiplication-2-opencl.html
 int main() {
 
+  int MY_LOCAL_WORK_SIZE = 16;
   int MY_MATRIX_SIZE = 1024;
 
   // Allocate memory.
@@ -134,11 +135,12 @@ int main() {
   errorCode |= clSetKernelArg(kernel, 4, sizeof(int), (void *)&wC);
   checkError(errorCode);
 
-  localWorkSize[0] = 16;
-  localWorkSize[1] = 16;
+  localWorkSize[0] = MY_LOCAL_WORK_SIZE;
+  localWorkSize[1] = MY_LOCAL_WORK_SIZE;
   globalWorkSize[0] = MY_MATRIX_SIZE;
   globalWorkSize[1] = MY_MATRIX_SIZE;
 
+  // Enqueue the program. It will run, and we check for errors.
   errorCode = clEnqueueNDRangeKernel(clCommandQueue, kernel, 2, NULL, globalWorkSize, localWorkSize, 0, NULL, NULL);
   checkError(errorCode);
 
