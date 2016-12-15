@@ -208,11 +208,11 @@ int main() {
   // FILTER PROGRAM ============================================================
 
   // Simple gaussian blur
-	// float filter[] = {
-	// 	1, 2, 1,
-	// 	2, 4, 2,
-	// 	1, 2, 1
-	// };
+	float filter[] = {
+		1, 2, 1,
+		2, 4, 2,
+		1, 2, 1
+	};
 
   // Sharpen
   // float filter[] = {
