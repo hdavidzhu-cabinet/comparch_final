@@ -63,11 +63,10 @@ Image LoadImage(const char* path) {
 
 void SaveImage(const Image& img, const char* path) {
 	std::ofstream out (path, std::ios::binary);
-
 	out << "P6\n";
 	out << img.width << " " << img.height << "\n";
 	out << "255\n";
-	out.write (img.pixel.data (), img.pixel.size ());
+	out.write (img.pixel.data(), img.pixel.size());
 }
 
 Image RGBtoRGBA(const Image& input) {
@@ -221,11 +220,11 @@ int main() {
 	}
 
 	// Create a program from source
-	cl_program program = CreateProgram (LoadKernel("kernels/image.cl"), context);
-	CheckError(clBuildProgram (program, deviceIdCount, deviceIds.data(), "-D FILTER_SIZE=1", nullptr, nullptr));
+	cl_program program_gaussian = CreateProgram (LoadKernel("kernels/gaussian.cl"), context);
+	CheckError(clBuildProgram (program_gaussian, deviceIdCount, deviceIds.data(), "-D FILTER_SIZE=1", nullptr, nullptr));
 
 	// http://www.khronos.org/registry/cl/sdk/1.1/docs/man/xhtml/clCreateKernel.html
-	cl_kernel kernel = clCreateKernel(program, "Filter", &error);
+	cl_kernel kernel = clCreateKernel(program_gaussian, "gaussian", &error);
 	CheckError (error);
 
 	// OpenCL only supports RGBA, so we need to convert here
@@ -288,11 +287,8 @@ int main() {
 	clReleaseMemObject(outputImage);
 	clReleaseMemObject(filterWeightsBuffer);
 	clReleaseMemObject(inputImage);
-
 	clReleaseCommandQueue(queue);
-
 	clReleaseKernel(kernel);
-	clReleaseProgram(program);
-
+	clReleaseProgram(program_gaussian);
 	clReleaseContext(context);
 }
