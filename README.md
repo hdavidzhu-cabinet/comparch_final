@@ -85,7 +85,7 @@ We can modify our `MY_LOCAL_WORK_SIZE` and see performance changes. That dimensi
 
 Here is a visual of that:
 
-![workgroup](http://4.bp.blogspot.com/_11ZzbaXqQj0/SsEgxMAccuI/AAAAAAAAAIw/iHpL2PNpkJo/s1600-h/ndrange.JPG)
+![workgroup](assets/block_breakup.jpg)
 
 Here is a performance breakdown of varying workgroups.
 
@@ -97,4 +97,4 @@ Here is a performance breakdown of varying workgroups.
 | 2                  | 2048        | 4209442      |
 | 1                  | 2048        | 15490182     |
 
-As you can see, computation time exponentially decrease as the workgroup size becomes bigger. Since our GPU has the capabilities to run 16**2 or 256 threads at a time, we should take advantage that. 
+As you can see, computation time exponentially decrease as the workgroup size becomes bigger. Since our GPU has the capabilities to run 16**2 or 256 threads at a time, we should take advantage that.
