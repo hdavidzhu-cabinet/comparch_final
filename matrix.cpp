@@ -3,6 +3,8 @@
 #include <string>
 #include <fstream>
 #include <sstream>
+#include <time.h>
+#include <sys/time.h>
 
 #ifdef __APPLE__
 	#include "OpenCL/opencl.h"
@@ -47,7 +49,7 @@ cl_program CreateProgram(const std::string& source, cl_context context) {
 int main() {
 
   int MY_LOCAL_WORK_SIZE = 1;
-  int MY_MATRIX_SIZE = 1024;
+  int MY_MATRIX_SIZE = 2048;
 
   // Allocate memory.
   unsigned int width_A = MY_MATRIX_SIZE;
@@ -140,6 +142,13 @@ int main() {
   globalWorkSize[0] = MY_MATRIX_SIZE;
   globalWorkSize[1] = MY_MATRIX_SIZE;
 
+  typedef unsigned long long u64;
+  u64 u64useconds;
+  struct timeval tv;
+  gettimeofday(&tv, NULL);
+  u64useconds = (1000000*tv.tv_sec) + tv.tv_usec;
+  fprintf(stdout, "%lu\n", (unsigned long) u64useconds);
+
   // Enqueue the program. It will run, and we check for errors.
   errorCode = clEnqueueNDRangeKernel(clCommandQueue, kernel, 2, NULL, globalWorkSize, localWorkSize, 0, NULL, NULL);
   checkError(errorCode);
@@ -147,6 +156,10 @@ int main() {
   // Retrieve result from device.
   errorCode = clEnqueueReadBuffer(clCommandQueue, d_C, CL_TRUE, 0, mem_size_C, host_C, 0, NULL, NULL);
   checkError(errorCode);
+
+  gettimeofday(&tv, NULL);
+  u64useconds = (1000000*tv.tv_sec) + tv.tv_usec;
+  fprintf(stdout, "%lu\n", (unsigned long) u64useconds);
 
   // 9. print out the results
   // printf("\n\nMatrix C (Results)\n");

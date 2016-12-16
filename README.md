@@ -67,3 +67,34 @@ float filter[] = {
 ![test](assets/dark_edges.jpg)
 
 ## Matrix Multiplication
+
+Matrix multiplication is another great application for our GPU. In `matrix.cpp`, you can control the following:
+
+```c
+// The dimensions of a work-group. This cannot be larger than what the GPU can
+// provide (squared). For instance, if your GPU can run 256 threads max, this
+// cannot be greater than that.
+int MY_LOCAL_WORK_SIZE = 16;
+
+// We generate a random matrix. This is the size of one edge. Based on the
+// quirks of this program, it has to be a multiple of MY_LOCAL_WORK_SIZE.
+int MY_MATRIX_SIZE = 1024;
+```
+
+We can modify our `MY_LOCAL_WORK_SIZE` and see performance changes. That dimension, in our calculation, tells us how big of a block of computation we want to run at a time through our GPU.
+
+Here is a visual of that:
+
+![workgroup](http://4.bp.blogspot.com/_11ZzbaXqQj0/SsEgxMAccuI/AAAAAAAAAIw/iHpL2PNpkJo/s1600-h/ndrange.JPG)
+
+Here is a performance breakdown of varying workgroups.
+
+| MY_LOCAL_WORK_SIZE | MATRIX_SIZE | MICROSECONDS |
+|--------------------|-------------|--------------|
+| 16                 | 2048        | 1298311      |
+| 8                  | 2048        | 1769857      |
+| 4                  | 2048        | 1967246      |
+| 2                  | 2048        | 4209442      |
+| 1                  | 2048        | 15490182     |
+
+As you can see, computation time exponentially decrease as the workgroup size becomes bigger. Since our GPU has the capabilities to run 16**2 or 256 threads at a time, we should take advantage that. 
