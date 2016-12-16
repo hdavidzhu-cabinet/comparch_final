@@ -19,3 +19,51 @@ make && ./gpu_comparch_final
 # For matrix multiplication, run
 make && ./matrix_mul
 ```
+
+## Image Processing
+
+With our current implementation of image processing, we can apply convolution kernels to our images in parallel. In `main.cpp`, the section immediately after `FILTER PROGRAM` contains a set of (commented-out) filters for your use. This is the filter that gets applied on our input `test.ppm` image, where each pixel is transformed concurrently in work-groups (groups of threads per compute unit).
+
+For your convenience, here are the output images, after being processed by our GPU. Feel free to download the code and try your own filters!
+
+### Original image
+
+![test](assets/test.jpg)
+
+### Gaussian blur
+
+```c
+float filter[] = {
+  1, 2, 1,
+  2, 4, 2,
+  1, 2, 1
+};
+```
+
+![test](assets/gaussian.jpg)
+
+### Sharpen
+
+```c
+float filter[] = {
+  -1, -1, -1,
+  -1, 10, -1,
+  -1, -1, -1
+};
+```
+
+![test](assets/sharpen.jpg)
+
+### Dark edges
+
+```c
+float filter[] = {
+	-1, -1, -1,
+	-1,  8, -1,
+  -1, -1, -1
+};
+```
+
+![test](assets/dark_edges.jpg)
+
+## Matrix Multiplication
